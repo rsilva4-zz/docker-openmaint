@@ -2,7 +2,7 @@
 
 set -e
 
-BACKUP_FILE="/tmp/openmaint/database/openmaint-demo.backup"
+BACKUP_FILE="/tmp/openmaint/database/openmaint-1.1-demo.backup"
 
 wait_for_pg_restore_to_finish () {
 	COUNT_PG_RESTORE_RUNNING_PROCESSES_QUERY="SELECT count(*) FROM pg_stat_activity WHERE application_name='pg_restore';"
@@ -93,8 +93,8 @@ setup_database () {
 }
 
 unzip_wars () {	
-	unzip /tmp/openmaint/openmaint*.war -d $CATALINA_HOME/webapps/openmaint
-	unzip /tmp/openmaint/cmdbuild-shark-server*.war -d $CATALINA_HOME/webapps/shark
+	unzip /tmp/openmaint/openmaint-1*.war -d $CATALINA_HOME/webapps/openmaint
+	unzip /tmp/openmaint/*-shark-server*.war -d $CATALINA_HOME/webapps/shark
 }
 
 setup_conf_file () {
@@ -136,8 +136,6 @@ configure_application () {
 setup_application () {		
 	if ! [ -d $CATALINA_HOME/webapps/shark ]; then		
 		echo "$CATALINA_HOME/webapps/shark does not exist, setting up application"
-		cp /tmp/openmaint/scheduler/* $CATALINA_HOME/lib/
-		cp /tmp/openmaint/extras/tomcat-libs/6.0/* $CATALINA_HOME/lib/
 		unzip_wars		
 		configure_application		
 	fi
